@@ -12,36 +12,59 @@ import sys
 import socket
 from datetime import datetime
 
-def print_banner(target : str) -> None:
+def print_start_banner(target : str) -> None:
     """
-    Prints a pretty banner specifying the target ip address and cureent time.
+    Prints a pretty banner for starting up script
     """
     print("-" * 50)
-    print("Scanning target: {}".format(target))
+    print("Starting scan on target: {}".format(target))
     print("Time started: {}".format(datetime.now()))
     print("-" * 50)
+
+
+def print_finish_banner(target : str, open_ports : list) -> None:
+    """
+    Prints a pretty banner for finishing up script
+    """
+    print("-" * 50)
+    print("Finished scan on target: {}".format(target))
+    print("Time finished: {}".format(datetime.now()))
+    print("{} open port(s)".format(str(len(open_ports))))
+
+    # print all open port numbers
+    if len(open_ports) != 0:
+        print("[", end="")
+
+        for port in open_ports:
+            print(port, end=" ")
+
+        print("]")
+        print("-" * 50)
 
 
 if len(sys.argv) != 2:
     print("Usage: python3 {} <ip>".format(sys.argv[0]))
     sys.exit()
 
-
-# begin scanning ports
 try:
     # Translate hostname to IPv4
     target = socket.gethostbyname(sys.argv[1])
-    print_banner(target)
 
-    for port in range(50, 85):
+    print_start_banner(target)
+    open_ports = []
+
+    # Begin scanning ports
+    for port in range(50, 200):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         socket.setdefaulttimeout(1.)
         err = s.connect_ex((target, port))
 
         if not err:
-            print("Port {} is open".format(port))
+            open_ports.append(port)
 
         s.close()
+
+    print_finish_banner(target, open_ports)
 
 except KeyboardInterrupt:
     print("Exiting program.")
