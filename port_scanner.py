@@ -12,12 +12,12 @@ import sys
 import socket
 from datetime import datetime
 
-def print_start_banner(target : str) -> None:
+def print_start_banner(target : str, start : str, end : str) -> None:
     """
     Prints a pretty banner for starting up script
     """
     print("-" * 50)
-    print("Starting scan on target: {}".format(target))
+    print("Starting scan on ports {0} - {1} target: {2}".format(start, end, target))
     print("Time started: {}".format(datetime.now()))
     print("-" * 50)
 
@@ -39,22 +39,24 @@ def print_finish_banner(target : str, open_ports : list) -> None:
             print(port, end=" ")
 
         print("]")
-        print("-" * 50)
+    print("-" * 50)
 
 
-if len(sys.argv) != 2:
-    print("Usage: python3 {} <ip>".format(sys.argv[0]))
+if len(sys.argv) != 4:
+    print("Usage: python3 {0} <ip> <start port> <end port>".format(sys.argv[0]))
     sys.exit()
 
 try:
     # Translate hostname to IPv4
     target = socket.gethostbyname(sys.argv[1])
+    start = sys.argv[2]
+    end = sys.argv[3]
 
-    print_start_banner(target)
+    print_start_banner(target, start, end)
     open_ports = []
 
     # Begin scanning ports
-    for port in range(50, 200):
+    for port in range(int(start), int(end)):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         socket.setdefaulttimeout(1.)
         err = s.connect_ex((target, port))
