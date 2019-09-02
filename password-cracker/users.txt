@@ -1,0 +1,5 @@
+alice:password
+bobby:diamonds
+carlos:computer
+derrick:SuperSafePa$$w0rd78
+eve:qwerty
