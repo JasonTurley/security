@@ -3,3 +3,7 @@ bobby:diamonds
 carlos:computer
 derrick:SuperSafePa$$w0rd78
 eve:qwerty
+forrest:spiderman
+gina:rainbows
+henry:a1b2c3
+igor:abcdef
