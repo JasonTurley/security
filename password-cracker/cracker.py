@@ -16,15 +16,15 @@ if len(sys.argv) != 3:
     print_usage()
     sys.exit()
 
-with open(sys.argv[1], "r") as password_file:
-    with open(sys.argv[2], "r") as user_file:
+with open(sys.argv[1], "r") as dictionary:
+    with open(sys.argv[2], "r") as credentials:
         total_cracked = 0
 
-        for creds in user_file:
+        for creds in credentials:
             user, actual_password = creds.split(":")  # ["user", "password"]
 
-            # run full dictionary against user password
-            for password in password_file:
+            # run full dictionary against each user password
+            for password in dictionary:
                 if password == actual_password:
                     total_cracked += 1
 
@@ -33,6 +33,8 @@ with open(sys.argv[1], "r") as password_file:
                     break
 
             # reset offset to beginning of password file
-            password_file.seek(0, 0)
+            dictionary.seek(0, 0)
 
+        print()
+        print("-" * 50)
         print("Cracked {} passwords".format(total_cracked))
